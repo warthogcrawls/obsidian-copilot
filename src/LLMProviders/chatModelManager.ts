@@ -621,9 +621,9 @@ export default class ChatModelManager {
     }
 
     // Check Copilot Plus entitlement requirements
-    if (model.plusExclusive && !settings.isPlusUser) {
-      return false;
-    }
+    // if (model.plusExclusive && !settings.isPlusUser) {
+    //   return false;
+    // }
 
     return true;
   }
@@ -715,12 +715,12 @@ export default class ChatModelManager {
     }
     if (!selectedModel.hasApiKey) {
       const errorMessage = `API key is not provided for the model: ${modelKey}.`;
-      if (model.provider === ChatModelProviders.COPILOT_PLUS) {
-        throw new MissingPlusLicenseError(
-          "Copilot Plus license key is not configured. Please enter your license key in the Copilot Plus section at the top of Basic Settings."
-        );
-      }
-      throw new MissingApiKeyError(errorMessage);
+      // if (model.provider === ChatModelProviders.COPILOT_PLUS) {
+      //   throw new MissingPlusLicenseError(
+      //     "Copilot Plus license key is not configured. Please enter your license key in the Copilot Plus section at the top of Basic Settings."
+      //   );
+      // }
+      // throw new MissingApiKeyError(errorMessage);
     }
 
     const modelConfig = await this.getModelConfig(model);

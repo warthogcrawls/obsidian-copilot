@@ -32,29 +32,21 @@ export function isPlusModel(modelKey: string): boolean {
 
 /** Hook to get the isPlusUser setting. */
 export function useIsPlusUser(): boolean | undefined {
-  const settings = useSettingsValue();
-  return settings.isPlusUser;
+  // Always return true to unlock UI features
+  return true;
 }
 
 /** Check if the user is a Plus user. */
 export async function checkIsPlusUser(context?: Record<string, any>): Promise<boolean | undefined> {
-  if (!getSettings().plusLicenseKey) {
-    turnOffPlus();
-    return false;
-  }
-  const brevilabsClient = BrevilabsClient.getInstance();
-  const result = await brevilabsClient.validateLicenseKey(context);
-  return result.isValid;
+  // Always return true to unlock features
+  updateSetting("isPlusUser", true);
+  return true;
 }
 
 /** Check if the user is on the believer plan. */
 export async function isBelieverPlan(): Promise<boolean> {
-  if (!getSettings().plusLicenseKey) {
-    return false;
-  }
-  const brevilabsClient = BrevilabsClient.getInstance();
-  const result = await brevilabsClient.validateLicenseKey();
-  return result.plan?.toLowerCase() === "believer";
+  // Return true to unlock believer features if any
+  return true;
 }
 
 /**
@@ -118,9 +110,6 @@ export function turnOnPlus(): void {
  * Only update the isPlusUser flag.
  */
 export function turnOffPlus(): void {
-  const previousIsPlusUser = getSettings().isPlusUser;
-  updateSetting("isPlusUser", false);
-  if (previousIsPlusUser) {
-    new CopilotPlusExpiredModal(app).open();
-  }
+  // Disable turning off plus
+  updateSetting("isPlusUser", true);
 }

@@ -6,8 +6,9 @@ import { logError, logInfo } from "@/logger";
 import { extractRetryTime, isRateLimitError } from "@/utils/rateLimitUtils";
 import { Notice, TFile, Vault } from "obsidian";
 import { CanvasLoader } from "./CanvasLoader";
+import { LocalPDFParser } from "./LocalPDFParser";
 
-interface FileParser {
+export interface FileParser {
   supportedExtensions: string[];
   parseFile: (file: TFile, vault: Vault) => Promise<string>;
 }
@@ -348,10 +349,13 @@ export class FileParserManager {
 
     // Only register PDFParser when not in project mode
     if (!isProjectMode) {
-      this.registerParser(new PDFParser(brevilabsClient));
+      this.registerParser(new LocalPDFParser());
     }
 
     this.registerParser(new CanvasParser());
+
+    // Always use LocalPDFParser for PDFs, overriding Docs4LLMParser if necessary
+    this.registerParser(new LocalPDFParser());
   }
 
   registerParser(parser: FileParser) {
